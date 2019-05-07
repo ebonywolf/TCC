@@ -1,12 +1,7 @@
-#include <iostream>
+
 #include <bits/stdc++.h>
-#include <armadillo>
-#include "gnuplot-iostream.h"
-#include <boost/tuple/tuple.hpp>
 #include <GnuOutput.h>
 
-#include <iostream>
-#include <Eigen/Dense>
 #include "Coord.h"
 
 #include "Simulator.h"
@@ -14,9 +9,7 @@
 
 using namespace std;
 using namespace wag;
-using Matrix = arma::Mat<double>;
 using Vetor=vector<double>;
-using Eigen::MatrixXd;
 
 template<class T>
 void meuswap(T& t, T& t2) {
@@ -48,23 +41,36 @@ void swapHalf(Pontos& m) {
 }
 
 double x0(double x){return 1;}
-double x1(double x){return x*x;}
+double x1(double x){return x;}
 double x2(double x){return x*x;}
 double x3(double x){return x*x*x;}
+double x4(double x){return x*x*x*x;}
 
 
-int main2(int argc, char** argv) {
+int main(int argc, char** argv) {
+    std::cout<< "hello world" << std::endl;
+    /*
+	Parameters params;
+	params.start= -3;
+	params.end= 3;
+	params.points=1000;
+//	params.modifier =
 
+	FFNN_mock ffnn;
+	IGMN_mock igmn;
 
+	//Simulator::Simulate(x4, ffnn, params);
+
+	Simulator::Simulate(x2, igmn, params);
 	/*
 //	ArtmapModelStub stub(1,1);
 //	stub.test(in, out)
-
-
 	Simulator::SimulateIgmn(x2, -3, 3,10);
 	Simulator::SimulateIgmn(x2, -3, 3,500);
 	Simulator::SimulateIgmn(x2, -3, 3,10000);
+
 	*/
+	//Simulator::Simulate(func, nn, params)
 
 }
 
