@@ -43,8 +43,8 @@ struct FFNN_mock: public Learner{
 	FFNN_mock();
 	~FFNN_mock(){}
 	void learn(Pontos p);
-	Result printResult(Pontos p, std::ostream& os){};
-	double operator()(double d){};
+	Result printResult(Pontos p, std::ostream& os);
+	double operator()(double d);
 	std::string name(){return "FFNN";}
 
 
