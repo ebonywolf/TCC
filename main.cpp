@@ -48,12 +48,12 @@ double x4(double x){return x*x*x*x;}
 
 
 int main(int argc, char** argv) {
-    std::cout<< "hello world" << std::endl;
-    /*
+
+
 	Parameters params;
 	params.start= -3;
 	params.end= 3;
-	params.points=1000;
+	params.points=100;
 //	params.modifier =
 
 	FFNN_mock ffnn;
@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 
 	//Simulator::Simulate(x4, ffnn, params);
 
-	Simulator::Simulate(x2, igmn, params);
+	Simulator::Simulate(x3, igmn, params);
 	/*
 //	ArtmapModelStub stub(1,1);
 //	stub.test(in, out)
