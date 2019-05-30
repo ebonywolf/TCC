@@ -44,7 +44,7 @@ namespace liac
 		double delta;
 		double tau;
 		double spMin;
-		double vMin;
+		double vMin;//todo
 		double chisq;
 		double eta;
 		vector<double> dataRange;

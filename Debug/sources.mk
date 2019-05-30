@@ -25,11 +25,6 @@ C_DEPS :=
 SUBDIRS := \
 . \
 GeneticAI \
-GeneticAI/obj/Debug \
 IGMN \
 NeuralNetwork \
-NeuralNetwork/obj/Debug \
-NeuralNetwork/obj/Debug/GeneticAI \
-NeuralNetwork/obj/Debug/NeuralNetwork \
-NeuralNetwork/obj/Debug/ProjGaia/SFML \
 

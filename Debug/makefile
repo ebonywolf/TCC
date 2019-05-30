@@ -8,13 +8,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include NeuralNetwork/obj/Debug/ProjGaia/SFML/subdir.mk
--include NeuralNetwork/obj/Debug/NeuralNetwork/subdir.mk
--include NeuralNetwork/obj/Debug/GeneticAI/subdir.mk
--include NeuralNetwork/obj/Debug/subdir.mk
 -include NeuralNetwork/subdir.mk
 -include IGMN/subdir.mk
--include GeneticAI/obj/Debug/subdir.mk
 -include GeneticAI/subdir.mk
 -include subdir.mk
 -include objects.mk
@@ -51,7 +46,7 @@ all: TCC
 TCC: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++  -o "TCC" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/home/wagner/Dropbox/Wagner/C++/TCC/include -o "TCC" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -61,6 +56,5 @@ clean:
 	-@echo ' '
 
 .PHONY: all clean dependents
-.SECONDARY:
 
 -include ../makefile.targets
