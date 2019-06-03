@@ -3,8 +3,8 @@
 #include <GnuOutput.h>
 
 #include "Coord.h"
-#include <opennn/opennn.h>
 #include "Simulator.h"
+#include "PointsGenerator.h"
 
 using namespace std;
 using namespace wag;
@@ -71,26 +71,26 @@ double seno( double x)
 	return std::sin(x);
 }
 
-using namespace OpenNN;
 
 int main( int argc , char** argv )
 {
-
-	std::cout<< "hello" << std::endl;
-
-	OpenNN::NeuralNetwork nn(1, 9, 1);
-    nn.construct_scaling_layer();
-
-    TrainingStrategy ts;
+	//test();
+	//return 0;
 
     Parameters params;
-    params.start = -2;
+    params.start = -4;
+    params.end = 4;
+    params.points = 100;
+    params.maxTime=3;
 
-    params.end = 2;
-    params.points = 10;
+    Pontos p = PointsGenerator::createPoints(x2,x1,params);
    // params.modifier =randomize;
+    Simulator simu;
+    FFNN_mock ffnn;
+    IGMN_mock igmn;
 
-    vector<double> range = { params.start, params.end };
+    simu.Simulate(seno, igmn , p);
+  //  vector<double> range = { params.start, params.end };
 
 
 }

@@ -2,23 +2,19 @@
 
 #include <vector>
 #include "IGMN/igmn.h"
-#include "GeneticNN.h"
+#include "GnuOutput.h"
+#include "PointsGenerator.h"
+#include <tiny_dnn/tiny_dnn.h>
 using namespace std;
 
 namespace wag{
-using Modifier = function<void(Pontos&)>;
 
 struct Result{
 	Pontos pontos;
 	double error;
 };
 
-struct Parameters{
 
-	 double start,end;
-	 int points=100;
-	 Modifier modifier;
-};
 struct Learner{
 	Learner(){}
 	virtual ~Learner(){}
@@ -30,7 +26,7 @@ struct Learner{
 };
 
 struct IGMN_mock: public Learner{
-	IGMN_mock(double tau=0.1, double delta=0.1, double spMin=0, double vMin=0, std::vector<double> range= std::vector<double>());
+	IGMN_mock(double tau=0.1, double delta=0.1, double spMin=2, double vMin=1, std::vector<double> range= std::vector<double>());
 	void learn(Pontos p)override;
 	Result printResult(Pontos p, std::ostream& os);
 	double operator()(double d);
@@ -47,18 +43,8 @@ struct FFNN_mock: public Learner{
 	Result printResult(Pontos p, std::ostream& os);
 	double operator()(double d);
 	std::string name(){return "FFNN";}
+	tiny_dnn::network<tiny_dnn::sequential> nn;
 
-	BasicNN nn;
-};
-struct GeneNN_mock: public Learner{
-	GeneNN_mock();
-	~GeneNN_mock(){}
-	void learn(Pontos p);
-	Result printResult(Pontos p, std::ostream& os);
-	double operator()(double d);
-	std::string name(){return "GeneNN";}
-
-	BasicNN nn;
 };
 
 
@@ -66,22 +52,17 @@ struct Simulator{
 	using Modifier = function<void(Pontos&)>;
 
 	template<class F>
-	static Result Simulate(F func,Learner& nn, Parameters& params){
-		Pontos p = Plotter::generatePoints( params.start, params.end, func, params.points);
-		Pontos original = p;
-		Plotter plot;
+	static Result Simulate(F func,Learner& nn, Pontos p){
+				Plotter plot;
 
-		plot.addPontos("F(x)", original);
+		plot.addPontos("F(x)", p);
 
 		static int cont =0;
-		if(params.modifier){
-			params.modifier(p);
-		}
 
 		Result result;
 
 		nn.learn(p);
-		result=nn.printResult(original,cout);
+		result=nn.printResult(p,cout);
 
 		string title=nn.name();
 		plot.pontos[title].clear();

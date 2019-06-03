@@ -2,95 +2,86 @@
 #include "IGMN/igmn.h"
 
 namespace wag {
+using Matriz = std::vector<std::vector<double>>;
 
 static const std::vector<double> range = { 2, 2 };
 
-FFNN_mock::FFNN_mock() {
-	nn = BasicNN({1,3,2,1});
-
-
-
+Matriz pontosToMat(Pontos p){
+	Matriz m;
+	for (auto& x: p) {
+		std::vector<double> tu(2);
+		tu[0]=x.first;
+		tu[1]=x.second;
+		m.push_back(tu);
+	}
+	return m;
 }
 
-void FFNN_mock::learn(Pontos p) {
-	PropagationTrainer trainer(&nn);
-	Plotter plot;
-	plot.addPontos("F(x)", p);
+FFNN_mock::FFNN_mock() {
 
-	for (int i = 0; i < 100000; i++) {
-		if(i==231){
-			int a=1;
-		}
-		trainer.train(p);
-/*
-		//usleep(2*1000);
-		std::cout<< "=====LAYERS=====" << std::endl;
-		for (auto& x: nn.layers) {
-			std::cout<< x << std::endl;
-		}
-		std::cout<< "Bias" << std::endl;
-		for (auto& x: nn.bias) {
-			std::cout<< x << std::endl;
-		}
-		std::cout<< "" << std::endl;
-*/
-		//getchar();
-		auto result=printResult(p,cout);
-		plot.pontos["FFNN"].clear();
-		plot.addPontos("FFNN", result.pontos);
-		plot.plot();
+	nn << tiny_dnn::fully_connected_layer(1, 10);
+	nn << tiny_dnn::sigmoid_layer();
+	nn << tiny_dnn::fully_connected_layer(10, 10);
+	nn << tiny_dnn::sigmoid_layer();
+	nn << tiny_dnn::fully_connected_layer(10, 1);
+
+}
+void FFNN_mock::learn(Pontos p) {
+//	Matrix<double> mat = pontosToMat(p);
+	std::vector<tiny_dnn::vec_t> X;
+	 std::vector<tiny_dnn::vec_t> Y;
+	 for (auto& x: p) {
+		X.push_back({x.first});
+		Y.push_back({x.second});
 	}
+	 Plotter plotter;
+	 plotter.addPontos("F(x)", p);
+	// vector<double> vDoubles(vFloats.begin(), vFloats.end());
+	size_t batch_size = 16;    // 16 samples for each network weight update
+	  int epochs        = 2000;  // 2000 presentation of all samples
+	  tiny_dnn::gradient_descent opt;
+
+	  // this lambda function will be called after each epoch
+	  int iEpoch              = 0;
+	  auto on_enumerate_epoch = [&]() {
+	    // compute loss and disp 1/100 of the time
+	    iEpoch++;
+	    if (iEpoch % 5) return;
+	    std::cout<< "Epoch:"<< iEpoch<< std::endl;
+	    Result result=printResult(p,cout);
+	    plotter.pontos["NN"]=result.pontos;
+	    plotter.plot();
+	  };
+	  // learn
+	  std::cout << "learning the sinus function with 2000 epochs:" << std::endl;
+	  nn.fit<tiny_dnn::mse>(opt, X, Y, batch_size, epochs, []() {},
+	                         on_enumerate_epoch);
+
 }
 Result FFNN_mock::printResult(Pontos p, std::ostream& os) {
 	Result result;
-	double sum;
-	for (auto& x : p) {
-		double _in = x.second;
-		double _res = nn(x.first);
-		result.pontos.push_back(std::make_pair(x.first, _res));
-	//	std::cout<< "P:"<<x.first<<" "<<_res << std::endl;
-		sum += (_in - _res) * (_in - _res);
+	for (auto& ponto: p) {
+		double x =ponto.first;
+		auto ans = (*this)(x);
+		result.pontos.push_back(std::make_pair(x, ans));
 	}
-	sum /= (double) p.size();
-	result.error = sum;
 	return result;
 }
 double FFNN_mock::operator()(double d) {
-	return nn(d);
+//	std::vector<double> inputs{d};
+//	nn.get_multilayer_perceptron_pointer()->calculate_outputs(inputs);
+	tiny_dnn::vec_t alce ={d};
+	auto resu = nn.predict(alce);
+	double ans = resu[0];
 }
 
-GeneNN_mock::GeneNN_mock() {
-}
-void GeneNN_mock::learn(Pontos p) {
-	NNTrainer nntrainer;
 
-	nn = nntrainer.trainFromPoints(p);
-	//nntrainer.trainBasicFunction(f);
-}
 
-Result GeneNN_mock::printResult(Pontos p, std::ostream& os) {
-	Result result;
-	double sum;
-	for (auto& x : p) {
-		double _in = x.second;
-		double _res = nn(x.first);
-		result.pontos.push_back(std::make_pair(x.first, _res));
-
-		sum += (_in - _res) * (_in - _res);
-	}
-	sum /= (double) p.size();
-	result.error = sum;
-	return result;
-}
-
-double GeneNN_mock::operator()(double d) {
-	return nn(d);
-}
 
 IGMN_mock::IGMN_mock(double tau, double delta, double spMin, double vMin, std::vector<double> range) :
 		igmn(tau, delta) {
 
-	igmn.init(range, tau, delta, spMin, vMin);
+	//igmn.init(range, tau, delta, spMin, vMin);
 
 }
 
@@ -104,7 +95,7 @@ void IGMN_mock::learn(Pontos p) {
 		m(1, i) = x.second;
 		i++;
 	}
-
+	std::cout<< m << std::endl;
 	igmn.train(m);
 //	igmn.train(m);
 	//igmn.train(m);
