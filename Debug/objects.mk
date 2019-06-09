@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lboost_system -lblas -lpthread -lgsl -lboost_iostreams -larmadillo -lopennn
+LIBS := -lboost_system -ljsoncpp -lblas -lpthread -lgsl -lboost_iostreams -larmadillo
 

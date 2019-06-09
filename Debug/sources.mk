@@ -26,5 +26,4 @@ SUBDIRS := \
 . \
 GeneticAI \
 IGMN \
-NeuralNetwork \
 

@@ -26,7 +26,7 @@ struct Learner{
 };
 
 struct IGMN_mock: public Learner{
-	IGMN_mock(double tau=0.1, double delta=0.1, double spMin=2, double vMin=1, std::vector<double> range= std::vector<double>());
+	IGMN_mock(std::vector<double> range,double tau=0.04, double delta=0.03, double spMin=2, double vMin=3);
 	void learn(Pontos p)override;
 	Result printResult(Pontos p, std::ostream& os);
 	double operator()(double d);
@@ -51,11 +51,9 @@ struct FFNN_mock: public Learner{
 struct Simulator{
 	using Modifier = function<void(Pontos&)>;
 
-	template<class F>
-	static Result Simulate(F func,Learner& nn, Pontos p){
+	static Result Simulate(Learner& nn, Pontos p, std::string name){
 				Plotter plot;
 
-		plot.addPontos("F(x)", p);
 
 		static int cont =0;
 
@@ -67,7 +65,8 @@ struct Simulator{
 		string title=nn.name();
 		plot.pontos[title].clear();
 
-		title+=to_string(cont);
+		plot.addPontos(name+to_string(cont), p);
+
 		plot.addPontos(title, result.pontos);
 
 		plot.plot();

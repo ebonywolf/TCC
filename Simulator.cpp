@@ -18,12 +18,12 @@ Matriz pontosToMat(Pontos p){
 }
 
 FFNN_mock::FFNN_mock() {
-
-	nn << tiny_dnn::fully_connected_layer(1, 10);
+int n=20;
+	nn << tiny_dnn::fully_connected_layer(1, n);
 	nn << tiny_dnn::sigmoid_layer();
-	nn << tiny_dnn::fully_connected_layer(10, 10);
+	nn << tiny_dnn::fully_connected_layer(n, n);
 	nn << tiny_dnn::sigmoid_layer();
-	nn << tiny_dnn::fully_connected_layer(10, 1);
+	nn << tiny_dnn::fully_connected_layer(n, 1);
 
 }
 void FFNN_mock::learn(Pontos p) {
@@ -38,7 +38,7 @@ void FFNN_mock::learn(Pontos p) {
 	 plotter.addPontos("F(x)", p);
 	// vector<double> vDoubles(vFloats.begin(), vFloats.end());
 	size_t batch_size = 16;    // 16 samples for each network weight update
-	  int epochs        = 2000;  // 2000 presentation of all samples
+	  int epochs        = 1000;  // 2000 presentation of all samples
 	  tiny_dnn::gradient_descent opt;
 
 	  // this lambda function will be called after each epoch
@@ -46,7 +46,7 @@ void FFNN_mock::learn(Pontos p) {
 	  auto on_enumerate_epoch = [&]() {
 	    // compute loss and disp 1/100 of the time
 	    iEpoch++;
-	    if (iEpoch % 5) return;
+	    if (iEpoch % 50) return;
 	    std::cout<< "Epoch:"<< iEpoch<< std::endl;
 	    Result result=printResult(p,cout);
 	    plotter.pontos["NN"]=result.pontos;
@@ -78,10 +78,9 @@ double FFNN_mock::operator()(double d) {
 
 
 
-IGMN_mock::IGMN_mock(double tau, double delta, double spMin, double vMin, std::vector<double> range) :
+IGMN_mock::IGMN_mock(std::vector<double> range,double tau, double delta, double spMin, double vMin) :
 		igmn(tau, delta) {
-
-	//igmn.init(range, tau, delta, spMin, vMin);
+	igmn.init(range, tau, delta, spMin, vMin);
 
 }
 
@@ -95,7 +94,6 @@ void IGMN_mock::learn(Pontos p) {
 		m(1, i) = x.second;
 		i++;
 	}
-	std::cout<< m << std::endl;
 	igmn.train(m);
 //	igmn.train(m);
 	//igmn.train(m);

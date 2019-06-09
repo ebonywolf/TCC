@@ -13,27 +13,31 @@ using Modifier = std::function<void(Pontos&)>;
 struct Parameters{
 	 double start,end;
 	 int points=100;
-	 int maxTime=100;
-	 Modifier modifier;
+	 std::string name;
+	 std::function<double(double)> function;
+	 double operator()(double x){
+		 return function(x);
+	 }
 };
 
 class PointsGenerator {
 public:
 
-	template <class F, class T>
-	static Pontos createPoints(F func, T tfunc, Parameters params){
-		double timeIncrement = (double)params.maxTime / (double)params.points;
+	static Pontos createTestPoints(Parameters func, std::function<double(double,double)> tfunc){
+
+		double timeIncrement = (double)10.0 / (double)func.points;
 		double time=1;
 		Pontos p;
-		for (int i = 0; i < params.points; i++) {
+		for (int i = 0; i < func.points; i++) {
 			double r = unif(generator);
-			double x =params.start+ r*(params.end-params.start);
+			double x =func.start+ r*(func.end-func.start);
 			double y = func(x);
-			double finalY = y*tfunc(time);
+			double finalY = tfunc(y,time);
 			time+=timeIncrement;
 			p.push_back( std::make_pair(x,finalY));
 		}
 		return p;
+
 	}
 private:
     static std::default_random_engine generator;
