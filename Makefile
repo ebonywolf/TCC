@@ -123,6 +123,33 @@ TCC/fast:
 	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/build
 .PHONY : TCC/fast
 
+Config.o: Config.cpp.o
+
+.PHONY : Config.o
+
+# target to build an object file
+Config.cpp.o:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/Config.cpp.o
+.PHONY : Config.cpp.o
+
+Config.i: Config.cpp.i
+
+.PHONY : Config.i
+
+# target to preprocess a source file
+Config.cpp.i:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/Config.cpp.i
+.PHONY : Config.cpp.i
+
+Config.s: Config.cpp.s
+
+.PHONY : Config.s
+
+# target to generate assembly for a file
+Config.cpp.s:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/Config.cpp.s
+.PHONY : Config.cpp.s
+
 Coord.o: Coord.cpp.o
 
 .PHONY : Coord.o
@@ -366,86 +393,59 @@ IGMN/statistic.cpp.s:
 	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/IGMN/statistic.cpp.s
 .PHONY : IGMN/statistic.cpp.s
 
-NeuralNetwork/Functions.o: NeuralNetwork/Functions.cpp.o
+MockUps.o: MockUps.cpp.o
 
-.PHONY : NeuralNetwork/Functions.o
-
-# target to build an object file
-NeuralNetwork/Functions.cpp.o:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/Functions.cpp.o
-.PHONY : NeuralNetwork/Functions.cpp.o
-
-NeuralNetwork/Functions.i: NeuralNetwork/Functions.cpp.i
-
-.PHONY : NeuralNetwork/Functions.i
-
-# target to preprocess a source file
-NeuralNetwork/Functions.cpp.i:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/Functions.cpp.i
-.PHONY : NeuralNetwork/Functions.cpp.i
-
-NeuralNetwork/Functions.s: NeuralNetwork/Functions.cpp.s
-
-.PHONY : NeuralNetwork/Functions.s
-
-# target to generate assembly for a file
-NeuralNetwork/Functions.cpp.s:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/Functions.cpp.s
-.PHONY : NeuralNetwork/Functions.cpp.s
-
-NeuralNetwork/NeuralNetwork.o: NeuralNetwork/NeuralNetwork.cpp.o
-
-.PHONY : NeuralNetwork/NeuralNetwork.o
+.PHONY : MockUps.o
 
 # target to build an object file
-NeuralNetwork/NeuralNetwork.cpp.o:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/NeuralNetwork.cpp.o
-.PHONY : NeuralNetwork/NeuralNetwork.cpp.o
+MockUps.cpp.o:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/MockUps.cpp.o
+.PHONY : MockUps.cpp.o
 
-NeuralNetwork/NeuralNetwork.i: NeuralNetwork/NeuralNetwork.cpp.i
+MockUps.i: MockUps.cpp.i
 
-.PHONY : NeuralNetwork/NeuralNetwork.i
+.PHONY : MockUps.i
 
 # target to preprocess a source file
-NeuralNetwork/NeuralNetwork.cpp.i:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/NeuralNetwork.cpp.i
-.PHONY : NeuralNetwork/NeuralNetwork.cpp.i
+MockUps.cpp.i:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/MockUps.cpp.i
+.PHONY : MockUps.cpp.i
 
-NeuralNetwork/NeuralNetwork.s: NeuralNetwork/NeuralNetwork.cpp.s
+MockUps.s: MockUps.cpp.s
 
-.PHONY : NeuralNetwork/NeuralNetwork.s
+.PHONY : MockUps.s
 
 # target to generate assembly for a file
-NeuralNetwork/NeuralNetwork.cpp.s:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/NeuralNetwork.cpp.s
-.PHONY : NeuralNetwork/NeuralNetwork.cpp.s
+MockUps.cpp.s:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/MockUps.cpp.s
+.PHONY : MockUps.cpp.s
 
-NeuralNetwork/Neuron.o: NeuralNetwork/Neuron.cpp.o
+PointsGenerator.o: PointsGenerator.cpp.o
 
-.PHONY : NeuralNetwork/Neuron.o
+.PHONY : PointsGenerator.o
 
 # target to build an object file
-NeuralNetwork/Neuron.cpp.o:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/Neuron.cpp.o
-.PHONY : NeuralNetwork/Neuron.cpp.o
+PointsGenerator.cpp.o:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/PointsGenerator.cpp.o
+.PHONY : PointsGenerator.cpp.o
 
-NeuralNetwork/Neuron.i: NeuralNetwork/Neuron.cpp.i
+PointsGenerator.i: PointsGenerator.cpp.i
 
-.PHONY : NeuralNetwork/Neuron.i
+.PHONY : PointsGenerator.i
 
 # target to preprocess a source file
-NeuralNetwork/Neuron.cpp.i:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/Neuron.cpp.i
-.PHONY : NeuralNetwork/Neuron.cpp.i
+PointsGenerator.cpp.i:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/PointsGenerator.cpp.i
+.PHONY : PointsGenerator.cpp.i
 
-NeuralNetwork/Neuron.s: NeuralNetwork/Neuron.cpp.s
+PointsGenerator.s: PointsGenerator.cpp.s
 
-.PHONY : NeuralNetwork/Neuron.s
+.PHONY : PointsGenerator.s
 
 # target to generate assembly for a file
-NeuralNetwork/Neuron.cpp.s:
-	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/NeuralNetwork/Neuron.cpp.s
-.PHONY : NeuralNetwork/Neuron.cpp.s
+PointsGenerator.cpp.s:
+	$(MAKE) -f CMakeFiles/TCC.dir/build.make CMakeFiles/TCC.dir/PointsGenerator.cpp.s
+.PHONY : PointsGenerator.cpp.s
 
 Simulator.o: Simulator.cpp.o
 
@@ -510,6 +510,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... TCC"
+	@echo "... Config.o"
+	@echo "... Config.i"
+	@echo "... Config.s"
 	@echo "... Coord.o"
 	@echo "... Coord.i"
 	@echo "... Coord.s"
@@ -537,15 +540,12 @@ help:
 	@echo "... IGMN/statistic.o"
 	@echo "... IGMN/statistic.i"
 	@echo "... IGMN/statistic.s"
-	@echo "... NeuralNetwork/Functions.o"
-	@echo "... NeuralNetwork/Functions.i"
-	@echo "... NeuralNetwork/Functions.s"
-	@echo "... NeuralNetwork/NeuralNetwork.o"
-	@echo "... NeuralNetwork/NeuralNetwork.i"
-	@echo "... NeuralNetwork/NeuralNetwork.s"
-	@echo "... NeuralNetwork/Neuron.o"
-	@echo "... NeuralNetwork/Neuron.i"
-	@echo "... NeuralNetwork/Neuron.s"
+	@echo "... MockUps.o"
+	@echo "... MockUps.i"
+	@echo "... MockUps.s"
+	@echo "... PointsGenerator.o"
+	@echo "... PointsGenerator.i"
+	@echo "... PointsGenerator.s"
 	@echo "... Simulator.o"
 	@echo "... Simulator.i"
 	@echo "... Simulator.s"

@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../Config.cpp \
 ../Coord.cpp \
+../MockUps.cpp \
 ../PointsGenerator.cpp \
 ../Simulator.cpp \
 ../main.cpp 
@@ -13,6 +14,7 @@ CPP_SRCS += \
 OBJS += \
 ./Config.o \
 ./Coord.o \
+./MockUps.o \
 ./PointsGenerator.o \
 ./Simulator.o \
 ./main.o 
@@ -20,6 +22,7 @@ OBJS += \
 CPP_DEPS += \
 ./Config.d \
 ./Coord.d \
+./MockUps.d \
 ./PointsGenerator.d \
 ./Simulator.d \
 ./main.d 

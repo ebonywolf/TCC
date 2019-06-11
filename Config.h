@@ -3,6 +3,7 @@
 #include "PointsGenerator.h"
 #include "Simulator.h"
 
+#include <jsoncpp/json/json.h>
 namespace wag{
 
 using FunctionMap = std::unordered_map<std::string , std::function<double(double)>>;
@@ -15,6 +16,8 @@ public:
 	std::vector<Parameters> functions;
 
 	std::vector< std::function<double(double,double)> > timeFunctions;
+	Json::Value igmn;
+
 	static Config ReadFile(std::string file);
 	static  FunctionMap& GetFunctions();
 	static  TimeFunctionMap& GetTimeFunctions();

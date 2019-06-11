@@ -1,10 +1,10 @@
 cmake_minimum_required ( VERSION 3.3 )
 project(Tcc)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 
-file(GLOB lib_srcs "*.cpp" "IGMN/*.cpp" "GeneticAI/*.cpp" "NeuralNetwork/*.cpp")
+file(GLOB lib_srcs "*.cpp" "IGMN/*.cpp" "GeneticAI/*.cpp")
 
 
 
@@ -19,4 +19,4 @@ list(REMOVE_ITEM lib_srcs ${CMAKE_CURRENT_SOURCE_DIR}/NeuralNetwork/main.cpp)
 message( ${lib_srcs} )
 add_executable(TCC main.cpp ${lib_srcs} )
 
-target_link_libraries( TCC boost_system blas pthread gsl boost_iostreams armadillo ) 
+target_link_libraries( TCC boost_system blas pthread gsl boost_iostreams jsoncpp armadillo ) 

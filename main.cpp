@@ -6,6 +6,7 @@
 #include "Simulator.h"
 #include "PointsGenerator.h"
 #include "Config.h"
+#include "IGMN_mock.h"
 
 using namespace std;
 using namespace wag;
@@ -59,32 +60,10 @@ double seno(double x) {
 	return std::sin(x);
 }
 
-std::vector<double> getRange(Pontos p) {
-	double xMin = 99999, yMin = 99999, xMax = -99999, yMax = -99999;
-	for (auto& c : p) {
-		if (c.first < xMin) {
-			xMin = c.first;
-		}
-		if (c.second < yMin) {
-			yMin = c.second;
-		}
-		if (c.second > yMax) {
-			yMax = c.second;
-		}
-		if (c.first > xMax) {
-			xMax = c.first;
-		}
-	}
-	std::vector<double> range = { xMax - xMin, yMax - yMin };
-	if(range[0]==0)range[0]=1;
-	if(range[1]==0)range[1]=1;
-
-	return range;
-}
 
 int main(int argc, char** argv) {
-	//test();
-	//return 0;
+
+
 
 	Config config = Config::ReadFile("test.json");
 
@@ -93,16 +72,10 @@ int main(int argc, char** argv) {
 			Pontos p = PointsGenerator::createTestPoints(funcs, timeFuncs);
 			Simulator simu;
 			FFNN_mock ffnn;
-			std::vector<double> range = getRange(p);
-			std::cout<< "Pontos"<<p.size() << std::endl;
-			for (auto& x: p) {
-				std::cout<< "X "<<x.first<<" Y "<<x.second << std::endl;
-			}
-
-			std::cout << "Range:" << range[0] << " " << range[1] << std::endl;
-
-			IGMN_mock igmn(range, 0.04, 0.1);
-			simu.Simulate(igmn, p, "f");
+	     	IGMN_mock igmn( config.igmn["tau"].asDouble(), config.igmn["delta"].asDouble()
+	     			, 2,3,config.igmn["rMax"].asInt());
+			simu.Simulate(igmn, p, funcs.name);
+			//simu.Simulate(ffnn, p, funcs.name);
 
 		}
 	}

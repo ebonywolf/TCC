@@ -1,6 +1,5 @@
 #include "Config.h"
 
-#include <jsoncpp/json/json.h>
 using namespace std;
 namespace wag {
 
@@ -30,6 +29,7 @@ Config Config::ReadFile(std::string file) {
 		config.timeFunctions.push_back(GetTimeFunctions()[name]);
 
 	}
+	config.igmn = conJ["IGMN"];
 	return config;
 
 }

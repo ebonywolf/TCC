@@ -181,7 +181,7 @@ MatrixXd IGMN::recall(MatrixXd x)
     int num_inp = x.rows();
     int num_out = this->dimension - num_inp;
     double sum = 0;
-    MatrixXd result(num_inp, 1);
+    MatrixXd result(num_out, 1);
     result.setZero();
     vector<double> pajs;
     vector<MatrixXd> xm;
@@ -207,8 +207,11 @@ MatrixXd IGMN::recall(MatrixXd x)
     for (int i = 0; i < this->size; i++)
         sum += pajs[i];
 
-    for (int i = 0; i < this->size; i++)
-        result = result + (xm[i] * pajs[i] / sum);
+    for (int i = 0; i < this->size; i++){
+    	auto alce =(xm[i] * pajs[i] / sum);
+    	result = result +alce;
+    }
+
 
     return result;
 }
