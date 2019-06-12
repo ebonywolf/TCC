@@ -59,10 +59,23 @@ FunctionMap& Config::GetFunctions() {
 		return 2*cos(x);
 	};
 	mapa["L5"] = [](double x) {
-		return pow(x, 0.5);
+
+		return pow( abs(x), 0.5);
 	};
-	mapa["L6"] = [](double x) {
-		return pow(-1, x)*2.0*x;
+
+	mapa["G0"] = [](double x) {
+			if(x<0)return  x+.0;
+			return  2*x-10.0;
+	};
+	mapa["G1"] = [](double x) {
+			if( abs((int)x) % 3 )return  1;
+			return  0;
+	};
+	mapa["R0"] = [](double x) {
+		static double lastValue =0;
+		double y = ((lastValue + x*5)+3)/2;
+		lastValue = y;
+		return y;
 	};
 
 	return mapa;

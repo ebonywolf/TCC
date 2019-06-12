@@ -12,26 +12,20 @@ namespace wag {
 std::vector<double> getRange(Pontos p);
 std::vector<double> getLoopRange(Pontos p);
 
-
 template<class T>
-void meuswap( T& t , T& t2 )
-{
-    auto alce = t;
-    t = t2;
-    t2 = alce;
+void meuswap(T& t, T& t2) {
+	auto alce = t;
+	t = t2;
+	t2 = alce;
 }
 
-void randomize( Pontos& m )
-{
-    auto num = m.size();
-    for ( int i = 0 ; i < num ; i++ )
-    {
-        int s1 = rand() % num;
-        meuswap( m[i] , m[s1] );
-    }
+void randomize(Pontos& m) {
+	auto num = m.size();
+	for (int i = 0; i < num; i++) {
+		int s1 = rand() % num;
+		meuswap(m[i], m[s1]);
+	}
 }
-
-
 
 Matriz pontosToMat(Pontos p) {
 	Matriz m;
@@ -56,10 +50,9 @@ FFNN_mock::FFNN_mock(int layers, int rMax) :
 }
 void FFNN_mock::learn(Pontos p) {
 //  Matrix<double> mat = pontosToMat(p);
+
 	int realEpoch = 5;
-	Plotter plotter;
-	plotter.addPontos("F(x)", p);
-	plotter.style["F(x)"] = Plotter::POINT;
+
 	// vector<double> vDoubles(vFloats.begin(), vFloats.end());
 	size_t batch_size = 1;
 	int epochs = 2; //100000 / p.size();  // 2000 presentation of all samples
@@ -73,22 +66,20 @@ void FFNN_mock::learn(Pontos p) {
 			if (iEpoch % 5) return;
 			//std::cout<< "Epoch:"<< iEpoch<< std::endl;
 			//Result result=printResult(p,cout);
-		//	plotter.pontos["NN"]=result.pontos;
+			//	plotter.pontos["NN"]=result.pontos;
 			//	plotter.plot();
-	};
+		};
 	// learn
 	for (int i = 0; i < realEpoch; i++) {
-		//randomize(p);
+
 		for (auto& x : p) {
 			std::vector<tiny_dnn::vec_t> X;
 			std::vector<tiny_dnn::vec_t> Y;
 
-			X.push_back( toInput(x.first));
+			X.push_back(toInput(x.first));
 			Y.push_back( { x.second });
 			nn.fit<tiny_dnn::mse>(opt, X, Y, batch_size, epochs, []() {}, on_enumerate_epoch);
-			Result result = printResult(p, cout);
-			plotter.pontos["NN"] = result.pontos;
-			plotter.plot();
+
 		}
 	}
 
@@ -104,22 +95,36 @@ Result FFNN_mock::printResult(Pontos p, std::ostream& os) {
 		mean += x.second;
 	}
 	mean /= (double) p.size();
-	double sum = 0;
-	double sum2 = 0;
+	double sum = 1;
+	double sum2 = 1;
 	for (auto& x : p) {
 		double my = (*this)(x.first);
 		double y = x.second;
-		double alce = (my - y);
+		double alce = (my - y) * (my - y);
 		sum += alce;
-		double alce2 = (mean - y);
+		double alce2 = (mean - y) * (mean - y);
 		sum2 += alce2;
 		result.pontos.push_back(std::make_pair(x.first, my));
+		learnSingle( x.first ,y);
 	}
-
 	result.error = sum / sum2;
 
 	recurssion = recurssionMemory;
 	return result;
+}
+
+void FFNN_mock::learnSingle(double x, double y) {
+	size_t batch_size = 1;
+	int epochs = 2; //100000 / p.size();  // 2000 presentation of all samples
+	tiny_dnn::gradient_descent opt;
+	opt.alpha = 0.01;
+	std::vector<tiny_dnn::vec_t> X;
+	std::vector<tiny_dnn::vec_t> Y;
+
+	X.push_back(toInput(x));
+	Y.push_back( { y });
+	nn.fit<tiny_dnn::mse>(opt, X, Y, batch_size, epochs, []() {}, []() {});
+
 }
 tiny_dnn::vec_t FFNN_mock::toInput(double d) {
 	tiny_dnn::vec_t alce = { d };

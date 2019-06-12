@@ -17,8 +17,8 @@ struct Simulator{
 	using Modifier = function<void(Pontos&)>;
 
 
-	static TestResult Simulate(Learner& nn, Pontos trainP,Pontos trainTestP,Pontos testP, std::string name, std::string output, bool recursive){
-
+	static TestResult Simulate(Learner& nn, Pontos trainP,Pontos trainTestP,Pontos testP, std::string fname, std::string output){
+		bool recursive=false;
 		Plotter plot;
 		Plotter fplot;
 
@@ -32,12 +32,14 @@ struct Simulator{
 		nn.learn(trainP);
 		trainResult=nn.printResult(trainTestP,cout);
 
-		string title=nn.name();
+		string title= fname;
 		plot.pontos[title].clear();
+		title+="_";
+		title+=nn.name();
 
-		ffplot->style[name]=Plotter::POINT;
+		ffplot->style[fname]=Plotter::CIRCLE;
 
-		if(recursive){
+		if(true){
 			plot.style[title]=Plotter::POINT;
 
 		}else{
@@ -45,27 +47,26 @@ struct Simulator{
 
 		}
 
-		ffplot->addPontos(name, trainTestP);
+		ffplot->addPontos(fname, trainTestP);
 		plot.addPontos(title, trainResult.pontos);
 
 		Result testResult;
 		testResult=nn.printResult(testP,cout);
 
-		ffplot->addPontos(name, testP);
+		ffplot->addPontos(fname, testP);
 		plot.addPontos(title, testResult.pontos);
 
 		std::cout<< "Train Error:"<<trainResult.error << " Test Error"<<testResult.error<<std::endl;
-
+		std::string fileName = output;
+		fileName+=title;
 
 		if(recursive){
-			std::string fileName = output;
+			plot.updateRange(*ffplot);
 
-			fplot.plot(output+title);
-			plot.plot(output+name);
+			ffplot->plot(output+fname);
+			plot.plot(fileName);
 		}else{
-			std::string fileName = output;
-			fileName+=title+"_";
-			fileName+=name;
+
 			plot.plot(fileName);
 		}
 

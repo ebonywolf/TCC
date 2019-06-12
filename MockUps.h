@@ -28,6 +28,7 @@ struct Learner {
 	virtual void learn(Pontos p)=0;
 	virtual Result printResult(Pontos p, std::ostream& os)=0;
 	virtual double operator()(double d)=0;
+	virtual void learnSingle(double x,double y)=0;
 	virtual std::string name()=0;
 
 };
@@ -59,6 +60,7 @@ struct FFNN_mock: public Learner {
 	void learn(Pontos p);
 	Result printResult(Pontos p, std::ostream& os);
 	double operator()(double d);
+	void learnSingle(double, double);
 	std::string name() {
 		return "FFNN";
 	}
