@@ -24,14 +24,12 @@ struct IGMN_mock: public Learner{
         MatrixXd m(2+rMax, num);
         double last = 0;
         for (auto& x : p) {
-
             m(0, i) = x.first;
             int j=0;
             for (auto& r: recurssion) {
 				m(1+j,i)=r;
 				j++;
 			}
-
 
             m(1+rMax, i) = x.second;
             auto mat = m.block(0, i, m.rows(), 1);
@@ -45,20 +43,27 @@ struct IGMN_mock: public Learner{
 
     Result printResult(Pontos p, std::ostream& os) {
         //   wag::Plotter plot;
-        double sum = 0;
+    	RecurssiveVector recurssionMemory = recurssion;
         Result result;
-
+        double mean=0;
+        for (auto& x: p) {
+        	mean+=x.second;
+		}
+        mean/=(double)p.size();
+        double sum=0;
+        double sum2=0;
         for (auto& x: p) {
         	double my =(*this)(x.first);
         	double y = x.second;
-        	sum+=(my -y )*(my - y);
+        	double alce = (my-y);
+        	sum+=alce;
+        	double alce2= (mean - y);
+        	sum2+=alce2;
         	result.pontos.push_back(std::make_pair(x.first,my));
-
 		}
 
-
-        sum /= p.size();
-        result.error = sum;
+        result.error= sum/sum2;;
+        recurssion =recurssionMemory;
         return result;
     }
 
@@ -75,7 +80,7 @@ struct IGMN_mock: public Learner{
         MatrixXd res = igmn.recall(m);
         double _res = res(0, 0);
 
-        recurssion.push(_res);
+        recurssion.push(d);
 
         return _res;
     }
@@ -106,10 +111,13 @@ private :
             }
         }
         std::vector<double> range(rMax+2);
-        range[0]=xMax - xMin;
-        for (int i = 1; i < range.size(); i++) {
-			range[i]=  yMax - yMin;
+
+        int i =0;
+        for (; i < range.size()-1; i++) {
+			range[i]= xMax - xMin;
 		}
+        range[i]=yMax - yMin;
+
         for (auto& x: range) {
             if(x==0)x=1;
         }

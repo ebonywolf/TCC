@@ -1,10 +1,12 @@
 #pragma once
 
+#ifndef SIMULATOR
+#define SIMULATOR
+
 #include <vector>
 #include "GnuOutput.h"
 #include "PointsGenerator.h"
 #include "MockUps.h"
-#include <tiny_dnn/tiny_dnn.h>
 
 using namespace std;
 
@@ -14,28 +16,63 @@ namespace wag{
 struct Simulator{
 	using Modifier = function<void(Pontos&)>;
 
-	static Result Simulate(Learner& nn, Pontos p, std::string name){
-				Plotter plot;
 
+	static TestResult Simulate(Learner& nn, Pontos trainP,Pontos trainTestP,Pontos testP, std::string name, std::string output, bool recursive){
+
+		Plotter plot;
+		Plotter fplot;
+
+		Plotter* ffplot = recursive ? &fplot: &plot;
 
 		static int cont =0;
+		TestResult result;
 
-		Result result;
+		Result trainResult;
 
-		nn.learn(p);
-		result=nn.printResult(p,cout);
+		nn.learn(trainP);
+		trainResult=nn.printResult(trainTestP,cout);
 
 		string title=nn.name();
 		plot.pontos[title].clear();
-		plot.style[name]=Plotter::POINT;
 
-		plot.addPontos(name, p);
-		plot.addPontos(title, result.pontos);
+		ffplot->style[name]=Plotter::POINT;
 
-		plot.plot();
-		std::cout<< "Error:"<<result.error << std::endl;
+		if(recursive){
+			plot.style[title]=Plotter::POINT;
+
+		}else{
+			plot.style[title]=Plotter::LINE;
+
+		}
+
+		ffplot->addPontos(name, trainTestP);
+		plot.addPontos(title, trainResult.pontos);
+
+		Result testResult;
+		testResult=nn.printResult(testP,cout);
+
+		ffplot->addPontos(name, testP);
+		plot.addPontos(title, testResult.pontos);
+
+		std::cout<< "Train Error:"<<trainResult.error << " Test Error"<<testResult.error<<std::endl;
+
+
+		if(recursive){
+			std::string fileName = output;
+
+			fplot.plot(output+title);
+			plot.plot(output+name);
+		}else{
+			std::string fileName = output;
+			fileName+=title+"_";
+			fileName+=name;
+			plot.plot(fileName);
+		}
 
 		cont++;
+
+		result.train=trainResult;
+		result.test=testResult;
 
 		return result;
 
@@ -44,3 +81,5 @@ struct Simulator{
 };
 
 }
+
+#endif

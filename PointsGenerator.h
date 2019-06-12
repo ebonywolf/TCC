@@ -23,23 +23,25 @@ struct Parameters{
 class PointsGenerator {
 public:
 
-	static Pontos createTestPoints(Parameters func, std::function<double(double,double)> tfunc){
-
-		double timeIncrement = (double)10.0 / (double)func.points;
-		double time=1;
+	static Pontos createPoints(Parameters func, std::function<double(double,double)> tfunc, double t0,double tn){
+		double var = tn-t0;
+		double timeIncrement = var / (double)func.points;
+		double time=t0;
 		Pontos p;
+		double acc = (func.end-func.start)/(double)func.points;
+		double x = func.start;
 		for (int i = 0; i < func.points; i++) {
 			double r = unif(generator);
 			double x =func.start+ r*(func.end-func.start);
+			//x+=acc;
 			double y = func(x);
 			double finalY = tfunc(y,time);
 			time+=timeIncrement;
 			p.push_back( std::make_pair(x,finalY));
 		}
 		return p;
-
 	}
-private:
+public:
     static std::default_random_engine generator;
     static std::uniform_real_distribution<double> unif;//(0, 1);
 };

@@ -14,6 +14,9 @@ struct Result {
 	Pontos pontos;
 	double error;
 };
+struct TestResult{
+	Result train,test;
+};
 
 #include "IGMN/igmn.h"
 
@@ -49,7 +52,8 @@ struct RecurssiveVector: public std::list<double> {
 };
 
 struct FFNN_mock: public Learner {
-	FFNN_mock();
+
+	FFNN_mock(int layers=20, int rMax=0);
 	~FFNN_mock() {
 	}
 	void learn(Pontos p);
@@ -58,8 +62,11 @@ struct FFNN_mock: public Learner {
 	std::string name() {
 		return "FFNN";
 	}
+private:
 	tiny_dnn::network<tiny_dnn::sequential> nn;
-
+	RecurssiveVector recurssion;
+	int rMax;
+	tiny_dnn::vec_t toInput(double n);
 };
 
 } /* namespace wag */

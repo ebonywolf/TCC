@@ -17,7 +17,9 @@ public:
 
 	std::vector< std::function<double(double,double)> > timeFunctions;
 	Json::Value igmn;
+	Json::Value ffnn;
 
+	std::vector<std::string> timeNames;
 	static Config ReadFile(std::string file);
 	static  FunctionMap& GetFunctions();
 	static  TimeFunctionMap& GetTimeFunctions();

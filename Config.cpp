@@ -23,13 +23,16 @@ Config Config::ReadFile(std::string file) {
 	}
 
 	auto& funcT = conJ["TimeFunctions"];
+
 	for (int i = 0; i < funcT.size(); i++) {
 		Json::Value func = funcT[i];
 		string name = func.asString();
+		config.timeNames.push_back(name);
 		config.timeFunctions.push_back(GetTimeFunctions()[name]);
 
 	}
 	config.igmn = conJ["IGMN"];
+	config.ffnn = conJ["FFNN"];
 	return config;
 
 }
@@ -52,6 +55,15 @@ FunctionMap& Config::GetFunctions() {
 	mapa["L3"] = [](double x) {
 		return (x-8.0)*(x+4)*(x);
 	};
+	mapa["L4"] = [](double x) {
+		return 2*cos(x);
+	};
+	mapa["L5"] = [](double x) {
+		return pow(x, 0.5);
+	};
+	mapa["L6"] = [](double x) {
+		return pow(-1, x)*2.0*x;
+	};
 
 	return mapa;
 }
@@ -73,10 +85,29 @@ TimeFunctionMap& Config::GetTimeFunctions() {
 	};
 	mapa["T3"] = [](double x, double t) {
 		if(t<5.0)return 3*x;
-
-
 		return x;
 	};
+	mapa["T4"] = [](double x, double t) {
+		double r =PointsGenerator::unif(PointsGenerator::generator);
+		double o =PointsGenerator::unif(PointsGenerator::generator);
+
+		if(r<0.08){
+			double i = -1;
+			if(o<0.5)i=1;
+			return x + i*5.0*x;
+		}
+			return x;
+	};
+	mapa["T5"] = [](double x, double t) {
+			int n=t/3;
+			if(n % 2 == 0){
+				return x;
+			}else{
+				return -x;
+			}
+		};
+
+
 
 	return mapa;
 }
