@@ -64,18 +64,13 @@ void FFNN_mock::learn(Pontos p) {
 		// compute loss and disp 1/100 of the time
 			iEpoch++;
 			if (iEpoch % 5) return;
-			//std::cout<< "Epoch:"<< iEpoch<< std::endl;
-			//Result result=printResult(p,cout);
-			//	plotter.pontos["NN"]=result.pontos;
-			//	plotter.plot();
+
 		};
 	// learn
 	for (int i = 0; i < realEpoch; i++) {
-
 		for (auto& x : p) {
 			std::vector<tiny_dnn::vec_t> X;
 			std::vector<tiny_dnn::vec_t> Y;
-
 			X.push_back(toInput(x.first));
 			Y.push_back( { x.second });
 			nn.fit<tiny_dnn::mse>(opt, X, Y, batch_size, epochs, []() {}, on_enumerate_epoch);
@@ -86,7 +81,7 @@ void FFNN_mock::learn(Pontos p) {
 	// this lambda function will be called after each epoch
 
 }
-Result FFNN_mock::printResult(Pontos p, std::ostream& os) {
+Result FFNN_mock::printResult(Pontos p, bool learn ) {
 	//   wag::Plotter plot;
 	RecurssiveVector recurssionMemory = recurssion;
 	Result result;
@@ -105,7 +100,8 @@ Result FFNN_mock::printResult(Pontos p, std::ostream& os) {
 		double alce2 = (mean - y) * (mean - y);
 		sum2 += alce2;
 		result.pontos.push_back(std::make_pair(x.first, my));
-		learnSingle( x.first ,y);
+		if(learn)
+		    learnSingle( x.first ,y);
 	}
 	result.error = sum / sum2;
 

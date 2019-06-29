@@ -26,7 +26,7 @@ struct Learner {
 	virtual ~Learner() {
 	}
 	virtual void learn(Pontos p)=0;
-	virtual Result printResult(Pontos p, std::ostream& os)=0;
+	virtual Result printResult(Pontos p, bool learn  )=0;
 	virtual double operator()(double d)=0;
 	virtual void learnSingle(double x,double y)=0;
 	virtual std::string name()=0;

@@ -94,10 +94,10 @@ TimeFunctionMap& Config::GetTimeFunctions() {
 		return x*t;
 	};
 	mapa["T2"] = [](double x, double t) {
-		return x/t;
+		return (x*t*t)/10.0;
 	};
 	mapa["T3"] = [](double x, double t) {
-		if(t<5.0)return 3*x;
+		if(t<=10.0)return 3*x;
 		return x;
 	};
 	mapa["T4"] = [](double x, double t) {

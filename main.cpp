@@ -35,30 +35,32 @@ private:
 	std::vector<std::string> tokens;
 };
 
-void doshit(Config& config, string output, bool igmn) {
-	string outfile = "ffnn.txt";
-	if(igmn)outfile="igmn.txt";
+void doshit(Config& config, string output) {
 
-	ofstream out(output + outfile, ios::trunc);
+	ofstream ffout(output + "ffnn.txt", ios::trunc);
+    ofstream igout(output + "igmn.txt", ios::trunc);
 
-	if (igmn) {
-	    out << "====IGMN Root relative squared error test=====\n";
-	}else{
-		out << "==== FFNN Root relative squared error test=====\n";
+    ffout << "==== FFNN Root relative squared error test=====\n";
+    igout << "==== IGMN Root relative squared error test=====\n";
 
-	}
+
 	for (auto& x : config.timeNames) {
-		out << "\t  " << x << "\t\t\t\t\t ";
+	    ffout << "\t  " << x << "\t\t\t\t\t ";
+	    igout << "\t  " << x << "\t\t\t\t\t ";
 	}
-	out << endl;
+	ffout << endl;
+	igout<< endl;
 	int i = 0;
 
 	for (auto& funcs : config.functions) {
-		out << funcs.name << "";
+	    ffout << funcs.name << "";
+	    igout << funcs.name << "";
+
 		int i = 0;
 		for (auto& timeFuncs : config.timeFunctions) {
 			std::cout << "Running:" << funcs.name << " " << config.timeNames[i] << std::endl;
-			out << "\t  ";
+			ffout << "\t  ";
+			igout << "\t  ";
 			Pontos train = PointsGenerator::createPoints(funcs, timeFuncs, 1, 11);
 			Pontos trainTest = PointsGenerator::createPoints(funcs, timeFuncs, 1, 11);
 			Pontos test = PointsGenerator::createPoints(funcs, timeFuncs, 11, 16);
@@ -67,22 +69,26 @@ void doshit(Config& config, string output, bool igmn) {
 			string fname = funcs.name + "_";
 			fname += config.timeNames[i];
 			fname += "";
-			TestResult result;
 
-			if (igmn) {
+
+			{
 				IGMN_mock igmn(config.igmn["tau"].asDouble(), config.igmn["delta"].asDouble(), 2, 3, config.igmn["rMax"].asInt());
-				result = simu.Simulate(igmn, train, trainTest, test, fname, output );
+				TestResult result = simu.Simulate(igmn, train, trainTest, test, fname, output );
+				igout << result.train.error << " " << result.test.error << " ";
 
-			} else {
+			}
+			{
 				FFNN_mock ffnn(config.ffnn["layer"].asInt(), config.ffnn["rMax"].asInt());
-				result = simu.Simulate(ffnn, train, trainTest, test, fname, output );
+				TestResult result = simu.Simulate(ffnn, train, trainTest, test, fname, output );
+				ffout << result.train.error << " " << result.test.error << " ";
+
 			}
 
-			out << result.train.error << " " << result.test.error << " ";
 			//simu.Simulate(ffnn, p, funcs.name);
 			i++;
 		}
-		out << "" << endl;
+		ffout << "" << endl;
+		igout << "" << endl;
 	}
 }
 
@@ -101,8 +107,7 @@ int main(int argc, char** argv) {
 
 	Config config = Config::ReadFile(input);
 
-	 doshit(config,  output, 0) ;
-	 doshit(config,  output, 1) ;
+	 doshit(config,  output) ;
 
 	// params.modifier =randomize;
 

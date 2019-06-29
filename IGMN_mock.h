@@ -10,6 +10,7 @@ struct IGMN_mock: public Learner {
 	std::string name() {
 		return "IGMN";
 	}
+	bool init = false;
 
 	IGMN_mock(double tau = 0.04, double delta = 0.03, double spMin = 2, double vMin = 3, int rMax = 0) :
 			igmn(tau, delta), tau(tau), delta(delta), spMin(spMin), vMin(vMin), rMax(rMax), recurssion(rMax) {
@@ -18,8 +19,11 @@ struct IGMN_mock: public Learner {
 	void learn(Pontos p) override {
 		RecurssiveVector recurssionMemory = recurssion;
 
-		auto range = getRange(p);
-		igmn.init(range, tau, delta, spMin, vMin);
+		if(!init){
+		    auto range = getRange(p);
+		    igmn.init(range, tau, delta, spMin, vMin);
+		}
+		init = true;
 		int i = 0;
 		int num = p.size();
 		MatrixXd m(2 + rMax, num);
@@ -45,6 +49,11 @@ struct IGMN_mock: public Learner {
 	}
 
 	Result printResult(Pontos p, std::ostream& os) {
+	    if(!init){
+	        auto range = getRange(p);
+	        igmn.init(range, tau, delta, spMin, vMin);
+	        init = true;
+	    }
 		//   wag::Plotter plot;
 		RecurssiveVector recurssionMemory = recurssion;
 		Result result;
