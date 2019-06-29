@@ -25,13 +25,9 @@ struct Learner {
 	}
 	virtual ~Learner() {
 	}
-	virtual void learn(Pontos p, double start, double end)=0;
+	virtual void learn(Pontos p)=0;
 
-	Result printResult(Pontos p, bool learn, double start, double end){
-		double var = end-start;
-			double timeIncrement = var / (double)p.size();
-			double time=start;
-
+	Result printResult(Pontos p, bool learn){
 			Result result;
 			double mean = 0;
 			for (auto& x : p) {
@@ -50,17 +46,20 @@ struct Learner {
 				result.pontos.push_back(std::make_pair(x.first, my));
 				if (learn)
 					learnSingle(x.first, y, time);
-				time+=timeIncrement;
+				timePlus();
 			}
 			result.error = sum / sum2;
-
 			return result;
 	}
 
 	virtual double operator()(double d, double t=0)=0;
 	virtual void learnSingle(double x,double y, double t)=0;
 	virtual std::string name()=0;
-
+	void timePlus(){
+		time+=0.02;
+		//if(time>10)time=0;
+	}
+	double time=0;
 };
 
 struct RecurssiveVector: public std::list<double> {
@@ -86,16 +85,18 @@ struct FFNN_mock: public Learner {
 	FFNN_mock(int layers=20, bool timed=0);
 	~FFNN_mock() {
 	}
-	void learn(Pontos p, double start, double end);
+	void learn(Pontos p);
 	double operator()(double, double t=0);
 	void learnSingle(double, double, double);
 	std::string name() {
 		return "FFNN";
 	}
+
 private:
 	tiny_dnn::network<tiny_dnn::sequential> nn;
 	//RecurssiveVector recurssion;
 	bool timed;
+	double time;
 
 	tiny_dnn::vec_t toInput(double n,double t);
 };

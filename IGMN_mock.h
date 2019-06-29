@@ -16,8 +16,8 @@ struct IGMN_mock: public Learner {
 			igmn(tau, delta), tau(tau), delta(delta), spMin(spMin), vMin(vMin), timed(timed) {
 	}
 
-	void learn(Pontos p, double start, double end) override {
-
+	void learn(Pontos p) override {
+		time =0;
 		if (!init) {
 			auto range = getRange(p);
 			igmn.init(range, tau, delta, spMin, vMin);
@@ -28,9 +28,6 @@ struct IGMN_mock: public Learner {
 		MatrixXd m(2 + timed, num);
 		double last = 0;
 
-		double var = end - start;
-		double timeIncrement = var / (double) p.size();
-		double time = start;
 
 		for (auto& x : p) {
 			m(0, i) = x.first;
@@ -45,8 +42,9 @@ struct IGMN_mock: public Learner {
 			igmn.learn(mat);
 			double novoY = (*this)(x.first);
 			i++;
-			time+=timeIncrement;
+			timePlus();
 		}
+		time =0;
 	}
 	void learnSingle(double x, double y, double t) {
 		MatrixXd m(2 + timed, 1);

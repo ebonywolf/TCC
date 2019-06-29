@@ -29,8 +29,8 @@ struct Simulator{
 
 		Result trainResult;
 
-		nn.learn(trainP,1,10);
-		trainResult=nn.printResult(trainTestP,false,1,10);
+		nn.learn(trainP);
+		trainResult=nn.printResult(trainTestP,false);
 
 		string title= fname;
 		plot.pontos[title].clear();
@@ -52,7 +52,7 @@ struct Simulator{
 
 
 		Result testResult;
-		testResult=nn.printResult(testP,true,10,15);
+		testResult=nn.printResult(testP,true);
 		ffplot->addPontos(fname, testP);
 		plot.addPontos(title, testResult.pontos);
 
