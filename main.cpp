@@ -61,9 +61,9 @@ void doshit(Config& config, string output) {
 			std::cout << "Running:" << funcs.name << " " << config.timeNames[i] << std::endl;
 			ffout << "\t  ";
 			igout << "\t  ";
-			Pontos train = PointsGenerator::createPoints(funcs, timeFuncs, 1, 11);
-			Pontos trainTest = PointsGenerator::createPoints(funcs, timeFuncs, 1, 11);
-			Pontos test = PointsGenerator::createPoints(funcs, timeFuncs, 11, 16);
+			Pontos train = PointsGenerator::createPoints(funcs, timeFuncs, 1, 10);
+			Pontos trainTest = PointsGenerator::createPoints(funcs, timeFuncs, 1, 10);
+			Pontos test = PointsGenerator::createPoints(funcs, timeFuncs, 10, 15);
 
 			Simulator simu;
 			string fname = funcs.name + "_";
@@ -72,13 +72,13 @@ void doshit(Config& config, string output) {
 
 
 			{
-				IGMN_mock igmn(config.igmn["tau"].asDouble(), config.igmn["delta"].asDouble(), 2, 3, config.igmn["rMax"].asInt());
+				IGMN_mock igmn(config.igmn["tau"].asDouble(), config.igmn["delta"].asDouble(), 2, 3, config.igmn["timed"].asBool());
 				TestResult result = simu.Simulate(igmn, train, trainTest, test, fname, output );
 				igout << result.train.error << " " << result.test.error << " ";
 
 			}
 			{
-				FFNN_mock ffnn(config.ffnn["layer"].asInt(), config.ffnn["rMax"].asInt());
+				FFNN_mock ffnn(config.ffnn["neurons"].asInt(), config.ffnn["timed"].asBool());
 				TestResult result = simu.Simulate(ffnn, train, trainTest, test, fname, output );
 				ffout << result.train.error << " " << result.test.error << " ";
 

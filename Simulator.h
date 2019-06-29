@@ -29,8 +29,8 @@ struct Simulator{
 
 		Result trainResult;
 
-		nn.learn(trainP);
-		trainResult=nn.printResult(trainTestP,cout);
+		nn.learn(trainP,1,10);
+		trainResult=nn.printResult(trainTestP,false,1,10);
 
 		string title= fname;
 		plot.pontos[title].clear();
@@ -50,13 +50,13 @@ struct Simulator{
 		ffplot->addPontos(fname, trainTestP);
 		plot.addPontos(title, trainResult.pontos);
 
-		Result testResult;
-		testResult=nn.printResult(testP,cout);
 
+		Result testResult;
+		testResult=nn.printResult(testP,true,10,15);
 		ffplot->addPontos(fname, testP);
 		plot.addPontos(title, testResult.pontos);
 
-		std::cout<< "Train Error:"<<trainResult.error << " Test Error"<<testResult.error<<std::endl;
+
 		std::string fileName = output;
 		fileName+=title;
 

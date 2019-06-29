@@ -64,7 +64,7 @@ FunctionMap& Config::GetFunctions() {
 	};
 
 	mapa["G0"] = [](double x) {
-			if(x<0)return  x+.0;
+			if(x<0)return  -x*x;
 			return  2*x-10.0;
 	};
 	mapa["G1"] = [](double x) {
@@ -97,7 +97,7 @@ TimeFunctionMap& Config::GetTimeFunctions() {
 		return (x*t*t)/10.0;
 	};
 	mapa["T3"] = [](double x, double t) {
-		if(t<=10.0)return 3*x;
+		if(t<10.5)return 3.0*x;
 		return x;
 	};
 	mapa["T4"] = [](double x, double t) {
