@@ -68,7 +68,7 @@ FunctionMap& Config::GetFunctions() {
 			return  2*x-10.0;
 	};
 	mapa["G1"] = [](double x) {
-			if( abs((int)x) % 3 )return  1;
+			if( abs((int)x) % 3 ==1)return  1;
 			return  0;
 	};
 	mapa["R0"] = [](double x) {

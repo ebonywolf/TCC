@@ -15,10 +15,22 @@ struct IGMN_mock: public Learner {
 	IGMN_mock(double tau = 0.04, double delta = 0.03, double spMin = 2, double vMin = 3, bool timed = 0) :
 			igmn(tau, delta), tau(tau), delta(delta), spMin(spMin), vMin(vMin), timed(timed) {
 	}
+	virtual Result printResult(Pontos p, bool learn) {
+		if (!init) {
+			time = 0;
+			auto range = getRange(p);
+			igmn.init(range, tau, delta, spMin, vMin);
+		}
+		init = true;
+		return Learner::printResult(p, learn);
+
+	}
 
 	void learn(Pontos p) override {
-		time =0;
+
 		if (!init) {
+			time = 0;
+
 			auto range = getRange(p);
 			igmn.init(range, tau, delta, spMin, vMin);
 		}
@@ -28,13 +40,11 @@ struct IGMN_mock: public Learner {
 		MatrixXd m(2 + timed, num);
 		double last = 0;
 
-
 		for (auto& x : p) {
 			m(0, i) = x.first;
 			int j = 0;
-			if(timed)
-				m(1 , i) = time;
-
+			if (timed)
+				m(1, i) = time;
 
 			m(1 + timed, i) = x.second;
 			auto mat = m.block(0, i, m.rows(), 1);
@@ -44,7 +54,7 @@ struct IGMN_mock: public Learner {
 			i++;
 			timePlus();
 		}
-		time =0;
+		//time =0;
 	}
 	void learnSingle(double x, double y, double t) {
 		MatrixXd m(2 + timed, 1);
@@ -98,7 +108,7 @@ private:
 		if (timed)
 			range[1] = 20;
 
-		range[1+timed] = (yMax - yMin) * 10;
+		range[1 + timed] = (yMax - yMin) * 10;
 		for (auto& x : range) {
 			if (x == 0)
 				x = 1;

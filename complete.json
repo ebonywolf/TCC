@@ -1,0 +1,66 @@
+{
+	"Functions":
+	[
+		{
+			"start": -3,
+			"end":3,
+			"points":200,
+			"name":"L0"
+		},
+		{
+			"start": -3,
+			"end":3,
+			"points":200,
+			"name":"L1"
+		},
+		{
+			"start": -3,
+			"end":3,
+			"points":200,
+			"name":"L2"
+		}
+		,{
+			"start": -3,
+			"end":3,
+			"points":200,
+			"name":"L3"
+		},
+		{
+			"start": -6,
+			"end":6,
+			"points":200,
+			"name":"L4"
+		},
+		{
+			"start": -3,
+			"end":3,
+			"points":200,
+			"name":"L5"
+		},
+		{
+			"start": -3,
+			"end":3,
+			"points":200,
+			"name":"G0"
+		},
+		{
+			"start": 0,
+			"end":10,
+			"points":200,
+			"name":"G1"
+		}
+
+	],
+	"TimeFunctions":["T0","T1","T2","T3","T4","T5"],
+	"IGMN":{
+		"tau": 0.01,
+		"delta":0.04,
+		"timed":false
+
+	},
+	"FFNN":{
+		"neurons":8,
+		"timed":false
+	}
+
+}

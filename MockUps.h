@@ -27,14 +27,14 @@ struct Learner {
 	}
 	virtual void learn(Pontos p)=0;
 
-	Result printResult(Pontos p, bool learn){
+	virtual Result printResult(Pontos p, bool learn){
 			Result result;
 			double mean = 0;
 			for (auto& x : p) {
 				mean += x.second;
 			}
 			mean /= (double) p.size();
-			double sum = 1;
+			double sum = 0;
 			double sum2 = 1;
 			for (auto& x : p) {
 				double my = (*this)(x.first, time);
@@ -44,11 +44,15 @@ struct Learner {
 				double alce2 = (mean - y) * (mean - y);
 				sum2 += alce2;
 				result.pontos.push_back(std::make_pair(x.first, my));
-				if (learn)
+				if (learn){
 					learnSingle(x.first, y, time);
+
+				}
 				timePlus();
+
 			}
-			result.error = sum / sum2;
+			double err = sum / sum2;
+			result.error = pow(err,0.5);
 			return result;
 	}
 
@@ -57,7 +61,7 @@ struct Learner {
 	virtual std::string name()=0;
 	void timePlus(){
 		time+=0.02;
-		//if(time>10)time=0;
+		if(time>30)time=0;
 	}
 	double time=0;
 };

@@ -63,8 +63,10 @@ void doshit(Config& config, string output) {
 			igout << "\t  ";
 			Pontos train = PointsGenerator::createPoints(funcs, timeFuncs, 1, 10);
 			Pontos trainTest = PointsGenerator::createPoints(funcs, timeFuncs, 1, 10);
+			auto alce =     funcs.points;
+			funcs.points= funcs.points/9.0 * 5.0;
 			Pontos test = PointsGenerator::createPoints(funcs, timeFuncs, 10, 15);
-
+			funcs.points=alce;
 			Simulator simu;
 			string fname = funcs.name + "_";
 			fname += config.timeNames[i];
@@ -102,6 +104,9 @@ int main(int argc, char** argv) {
 	}
 	if (inputs.hasParam("-i")) {
 		input = inputs.getValue("-i");
+	}
+	if (inputs.hasParam("-h")) {
+	    std::cout<< "usage tester -i [input.json] -o [outputFolder]" << std::endl;
 	}
 	mkdir(output.c_str(), 0777);
 

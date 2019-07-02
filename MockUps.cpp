@@ -47,13 +47,19 @@ FFNN_mock::FFNN_mock(int layers, bool timed) :
 void FFNN_mock::learn(Pontos p) {
 //  Matrix<double> mat = pontosToMat(p);
 	time =0;
-	int realEpoch = 5;
 
+	std::vector<tiny_dnn::vec_t> X;
+	std::vector<tiny_dnn::vec_t> Y;
+	for (auto& x : p) {
+		X.push_back(toInput(x.first,time));
+		Y.push_back( { x.second });
+		timePlus();
+	}
 	// vector<double> vDoubles(vFloats.begin(), vFloats.end());
-	size_t batch_size = 1;
-	int epochs = 2; //100000 / p.size();  // 2000 presentation of all samples
+	size_t batch_size = 10;
+	int epochs = 100; //100000 / p.size();  // 2000 presentation of all samples
 	tiny_dnn::gradient_descent opt;
-	opt.alpha = 0.001;
+	opt.alpha = 0.01;
 	int iEpoch = 0;
 
 	auto on_enumerate_epoch = [&]() {
@@ -61,20 +67,8 @@ void FFNN_mock::learn(Pontos p) {
 			iEpoch++;
 			if (iEpoch % 5) return;
 	};
+	nn.fit<tiny_dnn::mse>(opt, X, Y, batch_size, epochs, []() {}, on_enumerate_epoch);
 
-	for (int i = 0; i < realEpoch; i++) {
-		time =0;
-		for (auto& x : p) {
-			std::vector<tiny_dnn::vec_t> X;
-			std::vector<tiny_dnn::vec_t> Y;
-			X.push_back(toInput(x.first,time));
-			Y.push_back( { x.second });
-			nn.fit<tiny_dnn::mse>(opt, X, Y, batch_size, epochs, []() {}, on_enumerate_epoch);
-			timePlus();
-
-		}
-	}
-	time =0;
 }
 
 void FFNN_mock::learnSingle(double x, double y, double t) {

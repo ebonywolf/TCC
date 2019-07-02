@@ -29,8 +29,8 @@ struct Simulator{
 
 		Result trainResult;
 
-		nn.learn(trainP);
-		trainResult=nn.printResult(trainTestP,false);
+	//	nn.learn(trainP);
+		trainResult=nn.printResult(trainTestP,true);
 
 		string title= fname;
 		plot.pontos[title].clear();
